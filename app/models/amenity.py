@@ -4,7 +4,7 @@ from datetime import datetime
 class Amenity:
     def __init__(self, name):
 
-         if not name:
+        if not name:
             raise ValueError("Name is required.")
 
         self.uuid = str(uuid.uuid4())
@@ -12,9 +12,9 @@ class Amenity:
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
 
-        def update_name(self, new_name):
+    def update_name(self, new_name):
         """Update name"""
-        if not new_name :
+        if not new_name:
             raise ValueError("Name is required.")
 
         self.name = new_name
