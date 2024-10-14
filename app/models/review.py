@@ -3,18 +3,14 @@ from datetime import datetime
 
 class Review:
     def __init__(self, text, rating, place, user):
-
         if not text:
-            raise ValueError("Review text is required.")
-
+            raise ValueError("Review text is required")
         if not isinstance(rating, int) or not (1 <= rating <= 5):
-            raise ValueError("Rating must be an integer between 1 and 5.")
-
+            raise ValueError("Rating must be an integer between 1 and 5")
         if not isinstance(place, Place):
-            raise ValueError("Invalid place object.")
-
+            raise ValueError("Invalid place object")
         if not isinstance(user, User):
-            raise ValueError("Invalid user object.")
+            raise ValueError("Invalid user object")
 
         self.id = str(uuid.uuid4())
         self.text = text
@@ -28,11 +24,11 @@ class Review:
         """Update review"""
         if text is not None:
             if not text:
-                raise ValueError("Review text cannot be empty.")
+                raise ValueError("Review cannot be empty")
             self.text = text
         if rating is not None:
             if not isinstance(rating, int) or not (1 <= rating <= 5):
-                raise ValueError("Rating must be an integer between 1 and 5.")
+                raise ValueError("Rating must be an integer between 1 and 5")
             self.rating = rating
         self.updated_at = datetime.now()
 
