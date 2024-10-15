@@ -6,26 +6,26 @@ The project is organize in the following structure :
 ```bash
 hbnb/
 ├── app/
-│ ├── **init**.py
+│ ├── __init__.py
 │ ├── api/
-│ │ ├── **init**.py
+│ │ ├── __init__.py
 │ │ ├── v1/
-│ │ ├── **init**.py
+│ │ ├── __init__.py
 │ │ ├── users.py
 │ │ ├── places.py
 │ │ ├── reviews.py
 │ │ ├── amenities.py
 │ ├── models/
-│ │ ├── **init**.py
+│ │ ├── __init__.py
 │ │ ├── user.py
 │ │ ├── place.py
 │ │ ├── review.py
 │ │ ├── amenity.py
 │ ├── services/
-│ │ ├── **init**.py
+│ │ ├── __init__.py
 │ │ ├── facade.py
 │ ├── persistence/
-│ ├── **init**.py
+│ ├── __init__.py
 │ ├── repository.py
 ├── run.py
 ├── config.py
