@@ -3,3 +3,6 @@ flask
 
 # Flask-RESTx for building REST APIs
 flask-restx
+
+# Emai-Validator to check Email
+email-validator
