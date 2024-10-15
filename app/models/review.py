@@ -1,6 +1,7 @@
 import uuid
 from datetime import datetime
 
+
 class Review:
     def __init__(self, text, rating, place, user):
         if not text:
