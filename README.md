@@ -3,6 +3,7 @@
 ## Overview of the setup
 
 The project is organize in the following structure :
+```bash
 hbnb/
 ├── app/
 │ ├── **init**.py
@@ -30,6 +31,7 @@ hbnb/
 ├── config.py
 ├── requirements.txt
 ├── README.md
+```
 
 ## Purpose of each directories and files:
 
