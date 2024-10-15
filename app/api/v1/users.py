@@ -41,6 +41,26 @@ class UserList(Resource):
             "email": new_user.email,
         }, 201
 
+    @api.response(200, "List of users retrieved successfully")
+    @api.response(404, "User not found")
+    def get(self):
+        """Retrieve a list of all users."""
+        users_list = facade.get_all_users()
+
+        if not users_list:
+            return {"message": "No user found"}, 404
+
+        # Get the name of each amenity
+        return [
+            {
+                "id": user.id,
+                "first_name": user.first_name,
+                "last_name": user.last_name,
+                "email": user.email,
+            }
+            for user in users_list
+        ], 200
+
 
 @api.route("/<user_id>")
 class UserResource(Resource):
