@@ -5,8 +5,16 @@ from app.models.user import User
 class HBnBFacade:
     """Represent a facade."""
 
+    _instance = None
+
+    def __new__(cls, *args, **kwargs):
+        """Override __new__ to control instance creation (Singleton)."""
+        if cls._instance is None:
+            cls._instance = super().__new__(cls, *args, **kwargs)
+        return cls._instance
+
     def __init__(self):
-        """Initiliaze a HBnB facade' instance."""
+        """Initiliaze a instance of class HBnBFacade."""
         self.user_repo = InMemoryRepository()
 
     def create_user(self, user_data):

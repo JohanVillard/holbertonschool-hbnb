@@ -53,7 +53,7 @@ class UserList(Resource):
         # Get the name of each amenity
         return [
             {
-                "id": user.id,
+                "id": user.uuid,
                 "first_name": user.first_name,
                 "last_name": user.last_name,
                 "email": user.email,
