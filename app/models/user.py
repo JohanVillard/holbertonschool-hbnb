@@ -1,12 +1,13 @@
 import uuid
 from datetime import datetime
 
+
 class User:
     def __init__(self, first_name, last_name, email, is_admin=False):
-        if not first_name or not (0 < len(first_name) <= 50):
-            raise ValueError("First name is required and must be between 1 and 50 characters.")
-        if not last_name or not (0 < len(last_name) <= 50):
-            raise ValueError("Last name is required and must be between 1 and 50 characters.")
+        self.is_valid_length(first_name, 1, 50)
+
+        self.is_valid_length(last_name, 1, 50)
+
         if not email:
             raise ValueError("Email is required.")
 
@@ -22,12 +23,10 @@ class User:
     def update_user(self, new_first_name=None, new_last_name=None, new_email=None):
         """Update user"""
         if new_first_name is not None:
-            if not (0 < len(new_first_name) <= 50):
-                raise ValueError("First name must be between 1 and 50 characters.")
+            self.is_valid_length(new_first_name, 1, 50)
             self.first_name = new_first_name
         if new_last_name is not None:
-            if not (0 < len(new_last_name) <= 50):
-                raise ValueError("Last name must be between 1 and 50 characters.")
+            self.is_valid_length(new_last_name, 1, 50)
             self.last_name = new_last_name
         if new_email is not None:
             if not new_email:
@@ -36,10 +35,15 @@ class User:
         self.updated_at = datetime.now()
 
     def add_place(self, place):
-        """Add a place owned"""
+        """Add a place owned."""
         if not isinstance(place, Place):
             raise ValueError("Invalid Place object.")
         self.places.append(place)
 
     def __repr__(self):
         return f"<User uuid={self.uuid}, name={self.first_name} {self.last_name}, email={self.email}, is_admin={self.is_admin}, places={len(self.places)}>"
+
+    def is_valid_length(self, input, min, max):
+        """Check the length of the input."""
+        if not (min <= len(input) <= max):
+            raise ValueError(f"{input} be between {min} and {max} characters.")
