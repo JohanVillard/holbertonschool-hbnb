@@ -50,9 +50,11 @@ class User:
 
     def check_mail(self, email):
         """Check the validity of the mail."""
+        if not email:
+            raise ValueError("Email is required")
         try:
             validated_email = validate_email(email)
             email = validated_email.email
+            return email
         except EmailNotValidError as e:
             raise ValueError(f"{str(e)}")
-        return email
