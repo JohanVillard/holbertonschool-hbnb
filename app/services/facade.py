@@ -41,14 +41,13 @@ class HBnBFacade:
         if user is None:
             return None
 
-        update_data = {}
-        if "first_name" in user_data:
-            update_data["first_name"] = user_data["first_name"]
-        if "last_name" in user_data:
-            update_data["last_name"] = user_data["last_name"]
-        if "email" in user_data:
-            update_data["email"] = user_data["email"]
+        user.update_user(
+            new_first_name=user_data.get("first_name"),
+            new_last_name=user_data.get("last_name"),
+            new_email=user_data.get("email")
+        )
 
-        self.user_repo.update(user_id, update_data)
-        return self.user_repo.get(user_id)
+        # Update the user in the repository
+        self.user_repo.update(user_id, user.__dict__)
+        return user
 

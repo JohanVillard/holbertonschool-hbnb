@@ -23,13 +23,15 @@ class User:
 
     def update_user(self, new_first_name=None, new_last_name=None, new_email=None):
         """Update user"""
-        self.is_valid_length(new_first_name, 1, 50)
-        self.is_valid_length(new_last_name, 1, 50)
-        valid_new_email = self.check_mail(new_email)
-
-        self.first_name = new_first_name
-        self.last_name = new_last_name
-        self.email = valid_new_email
+        if new_first_name is not None:
+            self.is_valid_length(new_first_name, 1, 50)
+            self.first_name = new_first_name
+        if new_last_name is not None:
+            self.is_valid_length(new_last_name, 1, 50)
+            self.last_name = new_last_name
+        if new_email is not None:
+            valid_new_email = self.check_mail(new_email)
+            self.email = valid_new_email
         self.updated_at = datetime.now()
 
     def add_place(self, place):
