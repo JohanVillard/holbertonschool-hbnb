@@ -1,5 +1,6 @@
 from app.persistence.repository import InMemoryRepository
 from app.models.user import User
+from datetime import datetime
 
 
 class HBnBFacade:
@@ -37,5 +38,17 @@ class HBnBFacade:
 
     def update_user(self, user_id, user_data):
         """Update the user's data."""
-        self.user_repo.update(user_id, user_data)
+        user = self.user_repo.get(user_id)
+        if user is None:
+            return None
+        
+        update_data = {}
+        if "first_name" in user_data:
+            update_data["first_name"] = user_data["first_name"]
+        if "last_name" in user_data:
+            update_data["last_name"] = user_data["last_name"]
+        if "email" in user_data:
+            update_data["email"] = user_data["email"]
+        
+        self.user_repo.update(user_id, update_data)
         return self.user_repo.get(user_id)

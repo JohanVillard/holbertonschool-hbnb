@@ -39,6 +39,8 @@ class UserList(Resource):
             "first_name": new_user.first_name,
             "last_name": new_user.last_name,
             "email": new_user.email,
+            "created_at": new_user.created_at.isoformat(),
+            "updated_at": new_user.updated_at.isoformat(),
         }, 201
 
     @api.response(200, "List of users retrieved successfully")
@@ -76,4 +78,26 @@ class UserResource(Resource):
             "first_name": user.first_name,
             "last_name": user.last_name,
             "email": user.email,
+            "created_at": user.created_at.isoformat(),
+            "updated_at": user.updated_at.isoformat(),
+        }, 200
+
+    @api.expect(user_model, validate=True)
+    @api.response(200, "User details updated successfully")
+    @api.response(404, "User not found")
+    def put(self, user_id):
+        """Modify user details."""
+        user = facade.get_user(user_id)
+        if not user:
+            return {"error": "User not found"}, 404
+        user_data = api.payload
+        updated_user = facade.update_user(user_id, user_data)
+
+        return {
+            "id": updated_user.uuid,
+            "first_name": updated_user.first_name,
+            "last_name": updated_user.last_name,
+            "email": updated_user.email,
+            "created_at": updated_user.created_at.isoformat(),
+            "updated_at": updated_user.updated_at.isoformat(),
         }, 200
