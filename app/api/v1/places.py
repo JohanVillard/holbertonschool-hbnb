@@ -28,7 +28,7 @@ class PlaceList(Resource):
         try:
             place_data = api.payload
             new_place = facade.create_place(place_data)
-            new_place.owner.places.append(new_place.uuid)
+            new_place.owner.add_place(new_place.uuid)
             return {
                 "id": new_place.uuid,
                 "title": new_place.title,
@@ -123,3 +123,4 @@ class PlaceResource(Resource):
             }, 200
         except ValueError as e:
             return {"error": str(e)}, 400
+        
