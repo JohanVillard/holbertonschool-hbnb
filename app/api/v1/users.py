@@ -86,6 +86,7 @@ class UserResource(Resource):
                 "first_name": user.first_name,
                 "last_name": user.last_name,
                 "email": user.email,
+                "places":user.places,
                 "created_at": user.created_at.isoformat(),
                 "updated_at": user.updated_at.isoformat(),
             }, 200
