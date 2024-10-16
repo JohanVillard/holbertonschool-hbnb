@@ -56,6 +56,7 @@ class UserList(Resource):
             if not users_list:
                 return {"message": "No user found"}, 404
 
+            # Get the name of each user
             return [
                 {
                     "id": user.uuid,
@@ -67,6 +68,7 @@ class UserList(Resource):
             ], 200
         except ValueError as e:
             return {"error": str(e)}, 400
+
 
 
 @api.route("/<user_id>")
