@@ -26,42 +26,47 @@ class UserList(Resource):
     @api.response(400, "Invalid input data")
     def post(self):
         """Register a new user."""
-        user_data = api.payload
+        try:
+            user_data = api.payload
 
-        # Simulate email uniqueness check (to be replaced by real validation with persistence)
-        existing_user = facade.get_user_by_email(user_data["email"])
-        if existing_user:
-            return {"error": "Email already registered"}, 400
+            # Simulate email uniqueness check (to be replaced by real validation with persistence)
+            existing_user = facade.get_user_by_email(user_data["email"])
+            if existing_user:
+                return {"error": "Email already registered"}, 400
 
-        new_user = facade.create_user(user_data)
-        return {
-            "id": new_user.uuid,
-            "first_name": new_user.first_name,
-            "last_name": new_user.last_name,
-            "email": new_user.email,
-            "created_at": new_user.created_at.isoformat(),
-            "updated_at": new_user.updated_at.isoformat(),
+            new_user = facade.create_user(user_data)
+            return {
+                "id": new_user.uuid,
+                "first_name": new_user.first_name,
+                "last_name": new_user.last_name,
+                "email": new_user.email,
+                "created_at": new_user.created_at.isoformat(),
+                "updated_at": new_user.updated_at.isoformat(),
         }, 201
+        except ValueError as e:
+            return {"error": str(e)}, 400
 
     @api.response(200, "List of users retrieved successfully")
     @api.response(404, "User not found")
     def get(self):
         """Retrieve a list of all users."""
-        users_list = facade.get_all_users()
+        try:
+            users_list = facade.get_all_users()
 
-        if not users_list:
-            return {"message": "No user found"}, 404
+            if not users_list:
+                return {"message": "No user found"}, 404
 
-        # Get the name of each amenity
-        return [
-            {
-                "id": user.uuid,
-                "first_name": user.first_name,
-                "last_name": user.last_name,
-                "email": user.email,
-            }
-            for user in users_list
-        ], 200
+            return [
+                {
+                    "id": user.uuid,
+                    "first_name": user.first_name,
+                    "last_name": user.last_name,
+                    "email": user.email,
+                }
+                for user in users_list
+            ], 200
+        except ValueError as e:
+            return {"error": str(e)}, 400
 
 
 @api.route("/<user_id>")
@@ -70,17 +75,20 @@ class UserResource(Resource):
     @api.response(404, "User not found")
     def get(self, user_id):
         """Get user details by ID."""
-        user = facade.get_user(user_id)
-        if not user:
-            return {"error": "User not found"}, 404
-        return {
-            "id": user.uuid,
-            "first_name": user.first_name,
-            "last_name": user.last_name,
-            "email": user.email,
-            "created_at": user.created_at.isoformat(),
-            "updated_at": user.updated_at.isoformat(),
-        }, 200
+        try:
+            user = facade.get_user(user_id)
+            if not user:
+                return {"error": "User not found"}, 404
+            return {
+                "id": user.uuid,
+                "first_name": user.first_name,
+                "last_name": user.last_name,
+                "email": user.email,
+                "created_at": user.created_at.isoformat(),
+                "updated_at": user.updated_at.isoformat(),
+            }, 200
+        except ValueError as e:
+            return {"error": str(e)}, 400
 
     @api.expect(user_model, validate=True)
     @api.response(200, "User details updated successfully")
@@ -90,14 +98,17 @@ class UserResource(Resource):
         user = facade.get_user(user_id)
         if not user:
             return {"error": "User not found"}, 404
-        user_data = api.payload
-        updated_user = facade.update_user(user_id, user_data)
+        try:
+            user_data = api.payload
+            updated_user = facade.update_user(user_id, user_data)
 
-        return {
-            "id": updated_user.uuid,
-            "first_name": updated_user.first_name,
-            "last_name": updated_user.last_name,
-            "email": updated_user.email,
-            "created_at": updated_user.created_at.isoformat(),
-            "updated_at": updated_user.updated_at.isoformat(),
-        }, 200
+            return {
+                "id": updated_user.uuid,
+                "first_name": updated_user.first_name,
+                "last_name": updated_user.last_name,
+                "email": updated_user.email,
+                "created_at": updated_user.created_at.isoformat(),
+                "updated_at": updated_user.updated_at.isoformat(),
+            }, 200
+        except ValueError as e:
+            return {"error": str(e)}, 400

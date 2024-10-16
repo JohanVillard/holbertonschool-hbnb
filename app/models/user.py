@@ -46,7 +46,7 @@ class User:
     def is_valid_length(self, input, min, max):
         """Check the length of the input."""
         if not (min <= len(input) <= max) or input is None:
-            raise ValueError(f"{input} be between {min} and {max} characters.")
+            raise ValueError(f"{input} must be between {min} and {max} characters.")
 
     def check_mail(self, email):
         """Check the validity of the mail."""
