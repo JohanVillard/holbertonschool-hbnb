@@ -8,6 +8,7 @@ class Amenity:
 
         self.uuid = str(uuid.uuid4())
         self.name = name
+        self.places = []
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
 

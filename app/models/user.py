@@ -18,6 +18,7 @@ class User:
         self.email = valid_email
         self.is_admin = is_admin
         self.places = []
+        self.reviews = []
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
 
@@ -37,6 +38,10 @@ class User:
     def add_place(self, place):
         """Add a place owned."""
         self.places.append(place)
+
+    def add_review(self, review):
+        """Add a review."""
+        self.reviews.append(review)
 
     def __repr__(self):
         """Represent formated values of attributes."""

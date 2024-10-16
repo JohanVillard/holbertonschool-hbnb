@@ -1,7 +1,7 @@
 from flask_restx import Namespace, Resource, fields
 from app.services.facade import HBnBFacade
 
-api = Namespace("places", description="Place operations")
+api = Namespace("Places", description="Place operations")
 
 place_model = api.model(
     "Place",
@@ -66,6 +66,7 @@ class PlaceList(Resource):
                     "last_name": place.owner.last_name,
                 },
                 "description": place.description,
+                "reviews": len(place.reviews)
             }
             for place in places
         ], 200
@@ -91,7 +92,10 @@ class PlaceResource(Resource):
                 "last_name": place.owner.last_name,
             },
             "description": place.description,
-            "amenities": [{"id": amenity.uuid, "name": amenity.name} for amenity in place.amenities],
+            # "amenities": [{"id": amenity.uuid, "name": amenity.name} for amenity in place.amenities],
+            # "reviews": [{"id": review.id, "user": review.user, "description": review.text} for review in place.reviews],
+            "amenities": place.amenities,
+            "reviews": place.reviews,
             "created_at": place.created_at.isoformat(),
             "updated_at": place.updated_at.isoformat(),
         }, 200
@@ -123,4 +127,21 @@ class PlaceResource(Resource):
             }, 200
         except ValueError as e:
             return {"error": str(e)}, 400
-        
+
+@api.route("/<place_id>/add_amenity/<amenity_id>")
+class PlaceAmenity(Resource):
+    @api.response(200, "Place and amenity are now associated.")
+    @api.response(404, "Place not found")
+    @api.response(404, "Amenity not found")
+    def post(self, place_id, amenity_id):
+        place = facade.get_place(place_id)
+        if not place:
+            api.abort(404, "Place not found")
+
+        amenity = facade.get_amenity(amenity_id)
+        if not amenity:
+            api.abort(404, "Amenity not found")
+
+        place.amenities.append(amenity_id)
+        amenity.places.append(place_id)
+        return {"message": "Place and amenity are now associated."}, 200

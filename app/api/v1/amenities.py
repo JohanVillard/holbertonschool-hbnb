@@ -1,7 +1,7 @@
 from flask_restx import Namespace, Resource, fields
 from app.services.facade import HBnBFacade
 
-api = Namespace("amenities", description="Amenity operations")
+api = Namespace("Amenities", description="Amenity operations")
 
 # Define the amenity model for input validation and documentation
 amenity_model = api.model(
@@ -13,7 +13,7 @@ facade = HBnBFacade()
 
 @api.route("/")
 class AmenityList(Resource):
-    @api.expect(amenity_model)
+    @api.expect(amenity_model, validate=True)
     @api.response(201, "Amenity successfully created")
     @api.response(400, "Invalid input data")
     def post(self):
@@ -43,7 +43,7 @@ class AmenityResource(Resource):
         amenity = facade.get_amenity(amenity_id)
         if amenity is None:
             return {"message": "Amenity not found"}, 404
-        return {"id": amenity.uuid, "name": amenity.name}, 200
+        return {"id": amenity.uuid, "name": amenity.name, "places": amenity.places}, 200
 
     @api.expect(amenity_model)
     @api.response(200, "Amenity updated successfully")

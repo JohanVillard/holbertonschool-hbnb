@@ -6,3 +6,7 @@ flask-restx
 
 # Emai-Validator to check Email
 email-validator
+
+
+add amenity par rapport a la place , link l'amenity concerné
+mettre l'id de lamenity dans la place et inversement

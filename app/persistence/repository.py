@@ -61,3 +61,14 @@ class InMemoryRepository(Repository):
             ),
             None,
         )
+
+# class PlaceAmenityAssociation:
+
+#     def __init__(self):
+#         self.associations = []
+
+#     def add_association(self, place, amenity):
+#         if (place.id, amenity.id) not in self.associations:
+#             self.associations.append((place.id, amenity.id))
+#             place.amenities.append(amenity.id)
+#             amenity.places.append(place.id)

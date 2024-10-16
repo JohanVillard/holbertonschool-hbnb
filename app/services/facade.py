@@ -22,7 +22,11 @@ class HBnBFacade:
         self.place_repo = InMemoryRepository()
         self.amenity_repo = InMemoryRepository()
         self.review_repo = InMemoryRepository()
+        # self.association_repo = InMemoryRepository()
 
+    # ----------------------------------------------------------- #
+    ##########################_USER_###############################
+    # ----------------------------------------------------------- #
     def create_user(self, user_data):
         """Create an user."""
         user = User(**user_data)
@@ -52,13 +56,12 @@ class HBnBFacade:
             new_last_name=user_data.get("last_name"),
             new_email=user_data.get("email"),
         )
-
-        # Update the user in the repository
         self.user_repo.update(user_id, user.__dict__)
         return user
 
     # ----------------------------------------------------------- #
-
+    ##########################_PLACE_##############################
+    # ----------------------------------------------------------- #
 
     def create_place(self, place_data):
         """Create place."""
@@ -110,6 +113,8 @@ class HBnBFacade:
         """Add amenity for the place."""
 
     # ----------------------------------------------------------- #
+    #########################_AMENITY_#############################
+    # ----------------------------------------------------------- #
 
     def create_amenity(self, amenity_data):
         """Create an amenity."""
@@ -134,3 +139,57 @@ class HBnBFacade:
         self.amenity_repo.update(amenity_id, amenity_data)
         return self.amenity_repo.get(amenity_id)
 
+    # ----------------------------------------------------------- #
+    #########################_REVIEW_##############################
+    # ----------------------------------------------------------- #
+
+    def create_review(self, review_data):
+        """Create an review."""
+        user = self.get_user(review_data['user_id'])
+        if not user:
+            raise Exception("User not found")
+
+        place = self.get_place(review_data['place_id'])
+        if not place:
+            raise Exception("Place not found")
+
+        review = Review(
+            text=review_data['text'],
+            rating=review_data['rating'],
+            user_id=review_data['user_id'],
+            place_id=review_data['place_id']
+        )
+
+        self.review_repo.add(review)
+        return review
+
+    def get_all_reviews(self):
+        """Retrieve all review's data."""
+        return self.review_repo.get_all()
+
+    def get_review(self, review_id):
+        """Retrieve review's data."""
+        return self.review_repo.get(review_id)
+
+    def update_review(self, review_id, review_data):
+        """Update the review."""
+        review = self.review_repo.get(review_id)
+        if review is None:
+            return None
+
+        review.update_review(
+            text=review_data.get('text'),
+            rating=review_data.get('rating')
+        )
+        self.review_repo.update(review_id, review.__dict__)
+        return review
+
+
+    # def delete_review(self, review_id):
+    #     """Update the amenity."""
+    #     review = self.review_repo.get(review_id)
+    #     if review is None:
+    #         return None
+
+    #     self.review_repo.update(review_id, review_data)
+    #     return self.review_repo.get(review_id)

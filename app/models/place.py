@@ -16,8 +16,8 @@ class Place:
         self.longitude = float(longitude)
         self.owner = owner
         self.description = description
-        self.reviews = []  # List of reviews of this instance
-        self.amenities = []  # List of amenities of the instance
+        self.reviews = []
+        self.amenities = []
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
 

@@ -1,7 +1,7 @@
 from flask_restx import Namespace, Resource, fields
 from app.services.facade import HBnBFacade
 
-api = Namespace("users", description="User operations")
+api = Namespace("Users", description="User operations")
 
 # Define the user model for input validation and documentation
 user_model = api.model(
@@ -63,6 +63,8 @@ class UserList(Resource):
                     "first_name": user.first_name,
                     "last_name": user.last_name,
                     "email": user.email,
+                    "reviews":len(user.reviews),
+                    "places":len(user.places),
                 }
                 for user in users_list
             ], 200
@@ -87,6 +89,7 @@ class UserResource(Resource):
                 "last_name": user.last_name,
                 "email": user.email,
                 "places":user.places,
+                "reviews":user.reviews,
                 "created_at": user.created_at.isoformat(),
                 "updated_at": user.updated_at.isoformat(),
             }, 200
@@ -110,7 +113,6 @@ class UserResource(Resource):
                 "first_name": updated_user.first_name,
                 "last_name": updated_user.last_name,
                 "email": updated_user.email,
-                "created_at": updated_user.created_at.isoformat(),
                 "updated_at": updated_user.updated_at.isoformat(),
             }, 200
         except ValueError as e:
