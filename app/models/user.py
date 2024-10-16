@@ -1,7 +1,6 @@
 import uuid
 from datetime import datetime
 from email_validator import validate_email, EmailNotValidError
-from place import Place
 
 
 class User:
@@ -35,8 +34,6 @@ class User:
 
     def add_place(self, place):
         """Add a place owned."""
-        if not isinstance(place, Place):
-            raise ValueError("Invalid Place object.")
         self.places.append(place)
 
     def __repr__(self):

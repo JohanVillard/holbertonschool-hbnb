@@ -1,6 +1,5 @@
 import uuid
 from datetime import datetime
-from user import User
 
 
 class Place:
@@ -9,8 +8,6 @@ class Place:
     def __init__(self, title, price, latitude, longitude, owner, description=None):
         """Initialize an Place's instance."""
         self.is_valid_length(title, 1, 100)
-        if not isinstance(owner, User):
-            raise ValueError("The owner must be an user")
 
         self.uuid = str(uuid.uuid4())
         self.title = title
@@ -59,8 +56,6 @@ class Place:
     ):
         """Update place."""
         self.is_valid_length(new_title, 1, 100)
-        if not isinstance(owner, User):
-            raise ValueError("The owner must be an user")
 
         self.title = new_title
         self.price = price
