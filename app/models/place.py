@@ -7,13 +7,13 @@ class Place:
 
     def __init__(self, title, price, latitude, longitude, owner, description=None):
         """Initialize an Place's instance."""
-        self.input_length_validation(title, 1, 100)
+        self.is_valid_length(title, 1, 100)
 
         self.uuid = str(uuid.uuid4())
         self.title = title
-        self.price = price
-        self.latitude = latitude
-        self.longitude = longitude
+        self.price = float(price)
+        self.latitude = float(latitude)
+        self.longitude = float(longitude)
         self.owner = owner
         self.description = description
         self.reviews = []  # List of reviews of this instance
@@ -27,7 +27,7 @@ class Place:
 
     @price.setter
     def price(self, value):
-        if value <= 0:
+        if value <= 0 or not isinstance(value, float):
             raise ValueError("The price must be positive")
         self.__price = value
 
@@ -37,7 +37,7 @@ class Place:
 
     @latitude.setter
     def latitude(self, value):
-        if not -90 <= value <= 90:
+        if not -90 <= value <= 90 or not isinstance(value, float):
             raise ValueError("Latitude must be between -90 and 90")
         self.__latitude = value
 
@@ -47,7 +47,7 @@ class Place:
 
     @longitude.setter
     def longitude(self, value):
-        if not -180 <= value <= 180:
+        if not -180 <= value <= 180 or not isinstance(value, float):
             raise ValueError("Latitude must be between -180 and 180")
         self.__longitude = value
 
@@ -76,5 +76,5 @@ class Place:
 
     def is_valid_length(self, input, min, max):
         """Check the length of the input."""
-        if not (min <= len(input) <= max):
+        if not (min <= len(input) <= max) or input is None:
             raise ValueError(f"{input} be between {min} and {max} characters.")
