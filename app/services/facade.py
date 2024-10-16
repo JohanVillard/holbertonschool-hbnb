@@ -1,8 +1,12 @@
 from app.persistence.repository import InMemoryRepository
 from app.models.user import User
+<<<<<<< HEAD
 from app.models.place import Place
 from app.models.amenity import Amenity
 from app.models.review import Review
+=======
+from app.models.amenity import Amenity
+>>>>>>> 5b3f518021b52294b504f2169864432b44b614d4
 
 
 class HBnBFacade:
@@ -50,14 +54,14 @@ class HBnBFacade:
         user.update_user(
             new_first_name=user_data.get("first_name"),
             new_last_name=user_data.get("last_name"),
-            new_email=user_data.get("email")
+            new_email=user_data.get("email"),
         )
 
         # Update the user in the repository
         self.user_repo.update(user_id, user.__dict__)
         return user
 
-#######################################################################
+    # ----------------------------------------------------------- #
 
 
     def create_place(self, place_data):
@@ -108,5 +112,29 @@ class HBnBFacade:
     
     def add_amenities(self, place_id, amenity_id):
         """Add amenity for the place."""
-        
+
+    # ----------------------------------------------------------- #
+
+    def create_amenity(self, amenity_data):
+        """Create an amenity."""
+        amenity = Amenity(**amenity_data)
+        self.amenity_repo.add(amenity)
+        return amenity
+
+    def get_amenity(self, amenity_id):
+        """Retrieve the amenity's detail."""
+        return self.amenity_repo.get(amenity_id)
+
+    def get_all_amenities(self):
+        """Retrieve all amenities."""
+        return self.amenity_repo.get_all()
+
+    def update_amenity(self, amenity_id, amenity_data):
+        """Update the amenity."""
+        amenity = self.amenity_repo.get(amenity_id)
+        if amenity is None:
+            return None
+
+        self.amenity_repo.update(amenity_id, amenity_data)
+        return self.amenity_repo.get(amenity_id)
 
