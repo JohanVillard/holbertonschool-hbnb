@@ -43,6 +43,10 @@ class User:
         """Add a review."""
         self.reviews.append(review)
 
+    def delete_review(self, review):
+        """Remove a review."""
+        self.reviews.remove(review)
+
     def __repr__(self):
         """Represent formated values of attributes."""
         return f"<User uuid={self.uuid}, \

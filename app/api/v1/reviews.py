@@ -65,9 +65,30 @@ class ReviewList(Resource):
 
 @api.route("/<review_id>")
 class ReviewResource(Resource):
+    @api.response(200, "Display review details by ID.")
+    @api.response(404, "Review not found")
+    def get(self, review_id):
+        """Display review detail by ID."""
+        try:
+            review = facade.get_review(review_id)
+            if not review:
+                return {"error": "Review not found"}, 404        
+            review_data = api.payload
+            return {
+                  "id": review.uuid,
+                  "user_id": review.user_id,
+                  "place_id": review.place_id,
+                  "rating":review.rating,
+                  "text": review.text,
+                  "created_at": review.created_at.isoformat(),
+                  "updated_at": review.updated_at.isoformat(),
+              }, 200
+        except ValueError as e:
+            return {"error": str(e)}, 400
+
     @api.response(200, "Review details modified successfully")
     @api.response(404, "Review not found")
-    def put(self, user_id):
+    def put(self, review_id):
         """Modify review detail by ID."""
         try:
             review = facade.get_review(review_id)
@@ -88,23 +109,40 @@ class ReviewResource(Resource):
         except ValueError as e:
             return {"error": str(e)}, 400
 
+    @api.response(204, "Review successfully deleted")
+    @api.response(404, "Review not found")
+    def delete(self, review_id):
+        """Delete review by ID."""
+        try:
+            review = facade.get_review(review_id)
+            if not review:
+                return {"error": "Review not found"}, 404
+            facade.delete_review(review_id)
+            user = facade.get_user(review.user_id)
+            place = facade.get_place(review.place_id)
+            user.delete_review(review_id)
+            place.delete_review(review_id)
+            return 'Review successfully deleted', 204
+        except ValueError as e:
+            return {"error": str(e)}, 400
 
-@api.route("/<place_id>")
+
+@api.route("/place/<place_id>")
 class PlaceReview(Resource):
-    @api.response(200, "Place's review retrieved successfully")
-    @api.response(404, "Place not found")
+    @api.response(200, "Place's reviews retrieved successfully")
+    @api.response(404, "Place not found or no reviews")
     def get(self, place_id):
         """Get place reviews by ID."""
         try:
-            reviews_list = facade.get_place(place_id).reviews
+            place = facade.get_place(place_id)
+            if not place:
+                return {"error": "Place not found"}, 404
+            reviews_list = place.reviews
             if not reviews_list:
-                return {"error": "Any review found"}, 404
+                return {"message": "No reviews found for this place"}, 404
             return [
                 {
-                    "id": review.uuid,
-                    "user_id": review.user_id,
-                    "rating":review.rating,
-                    "text": review.text,
+                    "reviews": review,
                 }
                 for review in reviews_list
             ], 200
@@ -112,22 +150,22 @@ class PlaceReview(Resource):
             return {"error": str(e)}, 400
 
 
-@api.route("/<user_id>")
+@api.route("/user/<user_id>")
 class UserReview(Resource):
-    @api.response(200, "User's review retrieved successfully")
-    @api.response(404, "User not found")
+    @api.response(200, "User's reviews retrieved successfully")
+    @api.response(404, "User not found or no reviews")
     def get(self, user_id):
         """Get user reviews by ID."""
         try:
-            reviews_list = facade.get_user(user_id).reviews
+            user = facade.get_user(user_id)
+            if not user:
+                return {"error": "User not found"}, 404
+            reviews_list = user.reviews
             if not reviews_list:
-                return {"error": "Any review found"}, 404
+                return {"message": "No reviews found for this user"}, 404
             return [
                 {
-                    "id": review.uuid,
-                    "place_id": review.place_id,
-                    "rating":review.rating,
-                    "text": review.text,
+                    "reviews": review,
                 }
                 for review in reviews_list
             ], 200

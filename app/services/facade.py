@@ -184,12 +184,11 @@ class HBnBFacade:
         self.review_repo.update(review_id, review.__dict__)
         return review
 
-
-    # def delete_review(self, review_id):
-    #     """Update the amenity."""
-    #     review = self.review_repo.get(review_id)
-    #     if review is None:
-    #         return None
-
-    #     self.review_repo.update(review_id, review_data)
-    #     return self.review_repo.get(review_id)
+    def delete_review(self, review_id):
+        """Update the review."""
+        review = self.review_repo.get(review_id)
+        if review is None:
+            return None
+        self.review_repo.delete(review_id)
+        
+        return review_id
