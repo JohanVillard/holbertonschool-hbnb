@@ -134,6 +134,7 @@ class PlaceAmenity(Resource):
     @api.response(404, "Place not found")
     @api.response(404, "Amenity not found")
     def post(self, place_id, amenity_id):
+        """Associate an amenity to a place."""
         place = facade.get_place(place_id)
         if not place:
             api.abort(404, "Place not found")
