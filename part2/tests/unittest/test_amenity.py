@@ -2,7 +2,7 @@ import unittest
 from datetime import datetime
 from app.models.amenity import (
     Amenity,
-)  # Assurez-vous que le chemin d'importation est correct
+)
 
 
 class TestAmenity(unittest.TestCase):

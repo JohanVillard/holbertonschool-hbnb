@@ -2,7 +2,7 @@ import unittest
 from datetime import datetime
 from app.models.place import (
     Place,
-)  # Assurez-vous que le chemin d'importation est correct
+)
 
 
 class TestPlace(unittest.TestCase):
