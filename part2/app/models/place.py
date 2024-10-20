@@ -57,9 +57,9 @@ class Place:
         """Update place."""
         self.is_valid_length(new_title, 1, 100)
         self.title = new_title
-        self.price = price
-        self.latitude = latitude
-        self.longitude = longitude
+        self.price = float(price)
+        self.latitude = float(latitude)
+        self.longitude = float(longitude)
         self.owner = owner
         self.description = new_description
 

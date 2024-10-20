@@ -17,6 +17,7 @@ place_model = api.model(
 
 facade = HBnBFacade()
 
+
 @api.route("/")
 class PlaceList(Resource):
     @api.expect(place_model, validate=True)
@@ -46,7 +47,7 @@ class PlaceList(Resource):
             }, 201
         except ValueError as e:
             return {"error": str(e)}, 400
-        except Exception as e:
+        except Exception:
             return {"error": "Owner not found"}, 404
 
     @api.response(200, "List of places retrieved successfully")
@@ -66,10 +67,11 @@ class PlaceList(Resource):
                     "last_name": place.owner.last_name,
                 },
                 "description": place.description,
-                "reviews": len(place.reviews)
+                "reviews": len(place.reviews),
             }
             for place in places
         ], 200
+
 
 @api.route("/<place_id>")
 class PlaceResource(Resource):
@@ -100,7 +102,7 @@ class PlaceResource(Resource):
             "updated_at": place.updated_at.isoformat(),
         }, 200
 
-    @api.expect(place_model, validate=True)
+    @api.expect(place_model)
     @api.response(200, "Place details updated successfully")
     @api.response(404, "Place not found")
     @api.response(400, "Invalid input data")
@@ -111,22 +113,10 @@ class PlaceResource(Resource):
             updated_place = facade.update_place(place_id, place_data)
             if not updated_place:
                 return {"error": "Place not found"}, 404
-            return {
-                "id": updated_place.uuid,
-                "title": updated_place.title,
-                "price": updated_place.price,
-                "latitude": updated_place.latitude,
-                "longitude": updated_place.longitude,
-                "owner": {
-                    "id": updated_place.owner.uuid,
-                    "first_name": updated_place.owner.first_name,
-                    "last_name": updated_place.owner.last_name,
-                },
-                "description": updated_place.description,
-                "updated_at": updated_place.updated_at.isoformat(),
-            }, 200
+            return {"message": "Place updated successfully"}, 200
         except ValueError as e:
             return {"error": str(e)}, 400
+
 
 @api.route("/<place_id>/add_amenity/<amenity_id>")
 class PlaceAmenity(Resource):
@@ -146,3 +136,4 @@ class PlaceAmenity(Resource):
         place.amenities.append(amenity_id)
         amenity.places.append(place_id)
         return {"message": "Place and amenity are now associated."}, 200
+

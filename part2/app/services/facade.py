@@ -65,16 +65,16 @@ class HBnBFacade:
 
     def create_place(self, place_data):
         """Create place."""
-        owner = self.get_user(place_data['owner_id'])
+        owner = self.get_user(place_data["owner_id"])
         if not owner:
             raise Exception("Owner not found")
         place = Place(
-            title=place_data['title'],
-            price=place_data['price'],
-            latitude=place_data['latitude'],
-            longitude=place_data['longitude'],
+            title=place_data["title"],
+            price=place_data["price"],
+            latitude=place_data["latitude"],
+            longitude=place_data["longitude"],
             owner=owner,
-            description=place_data.get('description')
+            description=place_data.get("description"),
         )
         self.place_repo.add(place)
         return place
@@ -93,22 +93,22 @@ class HBnBFacade:
         if place is None:
             return None
 
-        owner = self.get_user(place_data.get('owner_id', place.owner.uuid))
+        owner = self.get_user(place_data.get("owner_id", place.owner.uuid))
         if not owner:
             raise Exception("Owner not found")
 
         place.update_place(
-            new_title=place_data.get('title', place.title),
-            price=place_data.get('price', place.price),
-            latitude=place_data.get('latitude', place.latitude),
-            longitude=place_data.get('longitude', place.longitude),
+            new_title=place_data.get("title", place.title),
+            price=place_data.get("price", place.price),
+            latitude=place_data.get("latitude", place.latitude),
+            longitude=place_data.get("longitude", place.longitude),
             owner=owner,
-            new_description=place_data.get('description', place.description)
+            new_description=place_data.get("description", place.description),
         )
 
         self.place_repo.update(place_id, place.__dict__)
         return place
-    
+
     def add_amenities(self, place_id, amenity_id):
         """Add amenity for the place."""
 
@@ -145,19 +145,19 @@ class HBnBFacade:
 
     def create_review(self, review_data):
         """Create an review."""
-        user = self.get_user(review_data['user_id'])
+        user = self.get_user(review_data["user_id"])
         if not user:
             raise Exception("User not found")
 
-        place = self.get_place(review_data['place_id'])
+        place = self.get_place(review_data["place_id"])
         if not place:
             raise Exception("Place not found")
 
         review = Review(
-            text=review_data['text'],
-            rating=review_data['rating'],
-            user_id=review_data['user_id'],
-            place_id=review_data['place_id']
+            text=review_data["text"],
+            rating=review_data["rating"],
+            user_id=review_data["user_id"],
+            place_id=review_data["place_id"],
         )
 
         self.review_repo.add(review)
@@ -178,8 +178,7 @@ class HBnBFacade:
             return None
 
         review.update_review(
-            text=review_data.get('text'),
-            rating=review_data.get('rating')
+            text=review_data.get("text"), rating=review_data.get("rating")
         )
         self.review_repo.update(review_id, review.__dict__)
         return review
@@ -191,3 +190,4 @@ class HBnBFacade:
             return None
         self.review_repo.delete(review_id)
         return review_id
+

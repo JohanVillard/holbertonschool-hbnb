@@ -15,6 +15,7 @@ review_model = api.model(
 
 facade = HBnBFacade()
 
+
 @api.route("/")
 class ReviewList(Resource):
     @api.expect(review_model, validate=True)
@@ -37,7 +38,7 @@ class ReviewList(Resource):
                 "user_id": new_review.user_id,
                 "created_at": new_review.created_at.isoformat(),
                 "updated_at": new_review.updated_at.isoformat(),
-        }, 201
+            }, 201
         except ValueError as e:
             return {"error": str(e)}, 400
 
@@ -54,7 +55,7 @@ class ReviewList(Resource):
                     "id": review.uuid,
                     "user_id": review.user_id,
                     "place_id": review.place_id,
-                    "rating":review.rating,
+                    "rating": review.rating,
                     "text": review.text,
                 }
                 for review in reviews_list
@@ -72,17 +73,16 @@ class ReviewResource(Resource):
         try:
             review = facade.get_review(review_id)
             if not review:
-                return {"error": "Review not found"}, 404        
-            review_data = api.payload
+                return {"error": "Review not found"}, 404
             return {
-                  "id": review.uuid,
-                  "user_id": review.user_id,
-                  "place_id": review.place_id,
-                  "rating":review.rating,
-                  "text": review.text,
-                  "created_at": review.created_at.isoformat(),
-                  "updated_at": review.updated_at.isoformat(),
-              }, 200
+                "id": review.uuid,
+                "user_id": review.user_id,
+                "place_id": review.place_id,
+                "rating": review.rating,
+                "text": review.text,
+                "created_at": review.created_at.isoformat(),
+                "updated_at": review.updated_at.isoformat(),
+            }, 200
         except ValueError as e:
             return {"error": str(e)}, 400
 
@@ -94,18 +94,10 @@ class ReviewResource(Resource):
             review = facade.get_review(review_id)
             if not review:
                 return {"error": "Review not found"}, 404
-            
+
             review_data = api.payload
-            updated_review = facade.update_review(review_id, review_data)
-            return {
-                  "id": updated_review.uuid,
-                  "user_id": updated_review.user_id,
-                  "place_id": updated_review.place_id,
-                  "rating":updated_review.rating,
-                  "text": updated_review.text,
-                  "created_at": updated_review.created_at.isoformat(),
-                  "updated_at": updated_review.updated_at.isoformat(),
-              }, 200
+            facade.update_review(review_id, review_data)
+            return {"message": "Review updated successfully"}, 200
         except ValueError as e:
             return {"error": str(e)}, 400
 
@@ -122,7 +114,7 @@ class ReviewResource(Resource):
             place = facade.get_place(review.place_id)
             user.delete_review(review_id)
             place.delete_review(review_id)
-            return 'Review successfully deleted', 204
+            return {"message": "Review deleted successfully"}, 204
         except ValueError as e:
             return {"error": str(e)}, 400
 
@@ -157,6 +149,7 @@ class UserReview(Resource):
     def get(self, user_id):
         """Get user reviews by ID."""
         try:
+            print(user_id)
             user = facade.get_user(user_id)
             if not user:
                 return {"error": "User not found"}, 404
@@ -171,4 +164,3 @@ class UserReview(Resource):
             ], 200
         except ValueError as e:
             return {"error": str(e)}, 400
-
