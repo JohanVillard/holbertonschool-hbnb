@@ -9,8 +9,8 @@ from app.models.user import User
 
 class TestReview(unittest.TestCase):
     def setUp(self):
-        """Initialisation des objets User et Place pour les tests."""
-        self.valid_user = User("John", "Doe", "john.doe@example.com")
+        """Initialisation of User and Place objects for tests.."""
+        self.valid_user = User("John", "Doe", "john.doe@gmail.com")
         self.valid_place = Place(
             "Beautiful House", 150.0, 34.05, -118.25, self.valid_user.uuid
         )
@@ -24,7 +24,7 @@ class TestReview(unittest.TestCase):
         )
 
     def test_create_review(self):
-        """Test la création d'une revue avec des attributs valides."""
+        """Test the creation of a review with valid attributes."""
         self.assertEqual(self.review.text, self.valid_text)
         self.assertEqual(self.review.rating, self.valid_rating)
         self.assertIsNotNone(self.review.uuid)  # Vérifie que l'UUID est généré
@@ -38,33 +38,33 @@ class TestReview(unittest.TestCase):
             Review("", self.valid_rating, self.valid_user.uuid, self.valid_place.uuid)
 
     def test_invalid_rating_too_low(self):
-        """Test la création d'une revue avec une note trop basse."""
+        """TTest the creation of a review with empty text."""
         with self.assertRaises(ValueError):
             Review("Great place!", 0, self.valid_user.uuid, self.valid_place.uuid)
 
     def test_invalid_rating_too_high(self):
-        """Test la création d'une revue avec une note trop haute."""
+        """Test the creation of a review with too high a rating."""
         with self.assertRaises(ValueError):
             Review("Great place!", 6, self.valid_user.uuid, self.valid_place.uuid)
 
     def test_invalid_rating_type(self):
-        """Test la création d'une revue avec un type de note invalide."""
+        """Test the creation of a review with an invalid note type."""
         with self.assertRaises(ValueError):
             Review("Great place!", "five", self.valid_user.uuid, self.valid_place.uuid)
 
     def test_update_review(self):
-        """Test la mise à jour d'une revue."""
+        """Test the creation of a review with an invalid note type."""
         self.review.update_review(text="Updated review", rating=4)
         self.assertEqual(self.review.text, "Updated review")
         self.assertEqual(self.review.rating, 4)
 
     def test_update_empty_text(self):
-        """Test la mise à jour d'une revue avec un texte vide."""
+        """Test updating a review with empty text."""
         with self.assertRaises(ValueError):
             self.review.update_review(text="")
 
     def test_update_invalid_rating(self):
-        """Test la mise à jour d'une revue avec une note invalide."""
+        """Test updating a review with an invalid rating."""
         with self.assertRaises(ValueError):
             self.review.update_review(rating=10)
 

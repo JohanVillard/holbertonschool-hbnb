@@ -7,7 +7,7 @@ from app.models.place import (
 
 class TestPlace(unittest.TestCase):
     def setUp(self):
-        """Initialisation d'un objet Place valide pour les tests."""
+        """Initialisation of a Place object valid for tests."""
         self.valid_title = "Beautiful House"
         self.valid_price = 150.0
         self.valid_latitude = 34.05
@@ -22,7 +22,7 @@ class TestPlace(unittest.TestCase):
         )
 
     def test_create_place(self):
-        """Test la création d'un lieu avec des attributs valides."""
+        """Test the creation of a location with valid attributes."""
         self.assertEqual(self.place.title, self.valid_title)
         self.assertEqual(self.place.price, self.valid_price)
         self.assertEqual(self.place.latitude, self.valid_latitude)
@@ -33,7 +33,7 @@ class TestPlace(unittest.TestCase):
         )  # Vérifie que created_at est un datetime
 
     def test_empty_title(self):
-        """Test la création d'un lieu avec un titre vide."""
+        """Test the creation of a place with an empty title."""
         with self.assertRaises(ValueError):
             Place(
                 "",
@@ -44,7 +44,7 @@ class TestPlace(unittest.TestCase):
             )
 
     def test_negative_price(self):
-        """Test la création d'un lieu avec un prix négatif."""
+        """Test the creation of a place with a negative price."""
         with self.assertRaises(ValueError):
             Place(
                 "House",
@@ -55,7 +55,7 @@ class TestPlace(unittest.TestCase):
             )
 
     def test_zero_price(self):
-        """Test la création d'un lieu avec un prix zéro."""
+        """Test the creation of a venue with a zero price tag."""
         with self.assertRaises(ValueError):
             Place(
                 "House",
@@ -66,7 +66,7 @@ class TestPlace(unittest.TestCase):
             )
 
     def test_invalid_latitude_too_low(self):
-        """Test la création d'un lieu avec une latitude trop basse."""
+        """Testing the creation of a place with too low a latitude."""
         with self.assertRaises(ValueError):
             Place(
                 "House",
@@ -77,21 +77,21 @@ class TestPlace(unittest.TestCase):
             )
 
     def test_invalid_latitude_too_high(self):
-        """Test la création d'un lieu avec une latitude trop haute."""
+        """Test the creation of a place with too high a latitude."""
         with self.assertRaises(ValueError):
             Place(
                 "House", self.valid_price, 100.0, self.valid_longitude, self.valid_owner
             )
 
     def test_invalid_longitude_too_low(self):
-        """Test la création d'un lieu avec une longitude trop basse."""
+        """Test the creation of a place with a longitude that is too low."""
         with self.assertRaises(ValueError):
             Place(
                 "House", self.valid_price, self.valid_latitude, -200.0, self.valid_owner
             )
 
     def test_invalid_longitude_too_high(self):
-        """Test la création d'un lieu avec une longitude trop haute."""
+        """Test the creation of a place with a longitude that is too high."""
         with self.assertRaises(ValueError):
             Place(
                 "House", self.valid_price, self.valid_latitude, 200.0, self.valid_owner
