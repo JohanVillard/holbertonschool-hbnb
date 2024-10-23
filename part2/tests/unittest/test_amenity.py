@@ -21,9 +21,9 @@ class TestAmenity(unittest.TestCase):
 
     def test_update_name(self):
         """Test la mise à jour du nom de l'amenity."""
-        new_name = "Jacuzzi"
-        self.amenity.update_name(new_name)
-        self.assertEqual(self.amenity.name, new_name)
+        new_name = {"name": "Jacuzzi"}
+        self.amenity.update(new_name)
+        self.assertEqual(self.amenity.name, new_name["name"])
 
     def test_invalid_name_length_too_short(self):
         """Test la création d'un amenity avec un nom trop court."""

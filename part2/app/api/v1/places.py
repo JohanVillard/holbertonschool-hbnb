@@ -82,6 +82,7 @@ class PlaceResource(Resource):
         place = facade.get_place(place_id)
         if not place:
             return {"error": "Place not found"}, 404
+
         return {
             "id": place.uuid,
             "title": place.title,
@@ -94,9 +95,11 @@ class PlaceResource(Resource):
                 "last_name": place.owner.last_name,
             },
             "description": place.description,
-            # "amenities": [{"id": amenity.uuid, "name": amenity.name} for amenity in place.amenities],
+            "amenities": [
+                {"id": amenity.uuid, "name": amenity.name}
+                for amenity in place.amenities
+            ],
             # "reviews": [{"id": review.id, "user": review.user, "description": review.text} for review in place.reviews],
-            "amenities": place.amenities,
             "reviews": place.reviews,
             "created_at": place.created_at.isoformat(),
             "updated_at": place.updated_at.isoformat(),
@@ -133,7 +136,31 @@ class PlaceAmenity(Resource):
         if not amenity:
             api.abort(404, "Amenity not found")
 
-        place.amenities.append(amenity_id)
-        amenity.places.append(place_id)
+        facade.associate_place_to_amenity(place_id, amenity_id)
         return {"message": "Place and amenity are now associated."}, 200
 
+
+@api.route("/<place_id>/reviews")
+class PlaceReview(Resource):
+    @api.response(200, "Place's reviews retrieved successfully")
+    @api.response(404, "Place not found or no reviews")
+    def get(self, place_id):
+        """Get places's reviews by ID."""
+        try:
+            place = facade.get_place(place_id)
+            if not place:
+                return {"error": "Place not found"}, 404
+
+            reviews_list = place.reviews
+            if not reviews_list:
+                return {"message": "No reviews found for this place"}, 404
+            return [
+                {
+                    "id": review_id,
+                    "text": facade.get_review(review_id).text,
+                    "rating": facade.get_review(review_id).rating,
+                }
+                for review_id in reviews_list
+            ], 200
+        except ValueError as e:
+            return {"error": str(e)}, 400

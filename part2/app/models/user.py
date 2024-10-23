@@ -22,17 +22,20 @@ class User:
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
 
-    def update_user(self, new_first_name=None, new_last_name=None, new_email=None):
-        """Update user"""
-        if new_first_name is not None:
-            self.is_valid_length(new_first_name, 1, 50)
-            self.first_name = new_first_name
-        if new_last_name is not None:
-            self.is_valid_length(new_last_name, 1, 50)
-            self.last_name = new_last_name
-        if new_email is not None:
-            valid_new_email = self.check_mail(new_email)
-            self.email = valid_new_email
+    def update(self, data):
+        """Update user."""
+        if data["first_name"] is not None:
+            self.is_valid_length(data["first_name"], 1, 50)
+        if data["last_name"] is not None:
+            self.is_valid_length(data["last_name"], 1, 50)
+
+        if data["email"] is not None:
+            valid_new_email = self.check_mail(data["email"])
+            data["email"] = valid_new_email
+
+        for key, value in data.items():
+            if hasattr(self, key):
+                setattr(self, key, value)
         self.updated_at = datetime.now()
 
     def add_place(self, place):

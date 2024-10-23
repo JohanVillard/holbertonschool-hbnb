@@ -42,7 +42,7 @@ class UserList(Resource):
                 "email": new_user.email,
                 "created_at": new_user.created_at.isoformat(),
                 "updated_at": new_user.updated_at.isoformat(),
-        }, 201
+            }, 201
         except ValueError as e:
             return {"error": str(e)}, 400
 
@@ -63,14 +63,13 @@ class UserList(Resource):
                     "first_name": user.first_name,
                     "last_name": user.last_name,
                     "email": user.email,
-                    "reviews":len(user.reviews),
-                    "places":len(user.places),
+                    "reviews": len(user.reviews),
+                    "places": len(user.places),
                 }
                 for user in users_list
             ], 200
         except ValueError as e:
             return {"error": str(e)}, 400
-
 
 
 @api.route("/<user_id>")
@@ -88,8 +87,8 @@ class UserResource(Resource):
                 "first_name": user.first_name,
                 "last_name": user.last_name,
                 "email": user.email,
-                "places":user.places,
-                "reviews":user.reviews,
+                "places": user.places,
+                "reviews": user.reviews,
                 "created_at": user.created_at.isoformat(),
                 "updated_at": user.updated_at.isoformat(),
             }, 200
@@ -115,5 +114,32 @@ class UserResource(Resource):
                 "email": updated_user.email,
                 "updated_at": updated_user.updated_at.isoformat(),
             }, 200
+        except ValueError as e:
+            return {"error": str(e)}, 400
+
+
+@api.route("/<user_id>/reviews")
+class UserReview(Resource):
+    @api.response(200, "User's reviews retrieved successfully")
+    @api.response(404, "User not found or no reviews")
+    def get(self, user_id):
+        """Get user's reviews by ID."""
+        try:
+            user = facade.get_user(user_id)
+            if not user:
+                return {"error": "User not found"}, 404
+            reviews_list = user.reviews
+            print(f"liste des review: {reviews_list}")
+            if not reviews_list:
+                return {"message": "No reviews found for this user"}, 404
+            return [
+                {
+                    "id": review_id,
+                    "place id": facade.get_review(review_id).place_id,
+                    "text": facade.get_review(review_id).text,
+                    "rating": facade.get_review(review_id).rating,
+                }
+                for review_id in reviews_list
+            ], 200
         except ValueError as e:
             return {"error": str(e)}, 400

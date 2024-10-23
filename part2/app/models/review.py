@@ -24,20 +24,22 @@ class Review:
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
 
-    def update_review(self, text=None, rating=None):
+    def update(self, data):
         """Update review."""
-        if text is not None:
-            if not text:
+        if data["text"] is not None:
+            if not data["text"]:
                 raise ValueError("Review cannot be empty")
-            self.text = text
-        if rating is not None:
+        if data["rating"] is not None:
             try:
-                rating_int = int(rating)
+                rating_int = int(data["rating"])
                 if not (1 <= rating_int <= 5):
                     raise ValueError
-                self.rating = rating_int
             except ValueError:
                 raise ValueError("Rating must be an integer between 1 and 5")
+
+        for key, value in data.items():
+            if hasattr(self, key):
+                setattr(self, key, value)
         self.updated_at = datetime.now()
 
     # def delete_review(self):

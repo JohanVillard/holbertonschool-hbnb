@@ -26,10 +26,7 @@ class ReviewList(Resource):
         try:
             review_data = api.payload
             new_review = facade.create_review(review_data)
-            user = facade.get_user(new_review.user_id)
-            place = facade.get_place(new_review.place_id)
-            user.add_review(new_review.uuid)
-            place.add_review(new_review.uuid)
+
             return {
                 "id": new_review.uuid,
                 "text": new_review.text,
@@ -110,34 +107,7 @@ class ReviewResource(Resource):
             if not review:
                 return {"error": "Review not found"}, 404
             facade.delete_review(review_id)
-            user = facade.get_user(review.user_id)
-            place = facade.get_place(review.place_id)
-            user.delete_review(review_id)
-            place.delete_review(review_id)
-            return {"message": "Review deleted successfully"}, 204
-        except ValueError as e:
-            return {"error": str(e)}, 400
-
-
-@api.route("/place/<place_id>")
-class PlaceReview(Resource):
-    @api.response(200, "Place's reviews retrieved successfully")
-    @api.response(404, "Place not found or no reviews")
-    def get(self, place_id):
-        """Get place reviews by ID."""
-        try:
-            place = facade.get_place(place_id)
-            if not place:
-                return {"error": "Place not found"}, 404
-            reviews_list = place.reviews
-            if not reviews_list:
-                return {"message": "No reviews found for this place"}, 404
-            return [
-                {
-                    "reviews": review,
-                }
-                for review in reviews_list
-            ], 200
+            return {"message": "Review deleted successfully"}, 200
         except ValueError as e:
             return {"error": str(e)}, 400
 
@@ -149,7 +119,6 @@ class UserReview(Resource):
     def get(self, user_id):
         """Get user reviews by ID."""
         try:
-            print(user_id)
             user = facade.get_user(user_id)
             if not user:
                 return {"error": "User not found"}, 404

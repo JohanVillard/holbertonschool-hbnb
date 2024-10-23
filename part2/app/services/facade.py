@@ -3,6 +3,7 @@ from app.models.user import User
 from app.models.place import Place
 from app.models.amenity import Amenity
 from app.models.review import Review
+from app.models.place_amenity import PlaceAmenityAssociation
 
 
 class HBnBFacade:
@@ -22,7 +23,7 @@ class HBnBFacade:
         self.place_repo = InMemoryRepository()
         self.amenity_repo = InMemoryRepository()
         self.review_repo = InMemoryRepository()
-        # self.association_repo = InMemoryRepository()
+        self.association_repo = InMemoryRepository()
 
     # ----------------------------------------------------------- #
     ##########################_USER_###############################
@@ -51,12 +52,7 @@ class HBnBFacade:
         if user is None:
             return None
 
-        user.update_user(
-            new_first_name=user_data.get("first_name"),
-            new_last_name=user_data.get("last_name"),
-            new_email=user_data.get("email"),
-        )
-        self.user_repo.update(user_id, user.__dict__)
+        self.user_repo.update(user_id, user_data)
         return user
 
     # ----------------------------------------------------------- #
@@ -81,7 +77,20 @@ class HBnBFacade:
 
     def get_place(self, place_id):
         """Retrieve place's data."""
-        return self.place_repo.get(place_id)
+        place = self.place_repo.get(place_id)
+        if not place:
+            return None
+
+        # List of place's amenities
+        amenities = []
+        # Get amenities IDs then data
+        for tup in self.association_repo.get_all():
+            if tup.association[0] == place_id:
+                amenities.append(self.amenity_repo.get(tup.association[1]))
+
+        place.amenities = amenities
+
+        return place
 
     def get_all_places(self):
         """Retrieve all places."""
@@ -93,20 +102,16 @@ class HBnBFacade:
         if place is None:
             return None
 
-        owner = self.get_user(place_data.get("owner_id", place.owner.uuid))
-        if not owner:
+        owner_id = self.get_user(place_data.get("owner_id", place.owner.uuid))
+        if not owner_id:
             raise Exception("Owner not found")
 
-        place.update_place(
-            new_title=place_data.get("title", place.title),
-            price=place_data.get("price", place.price),
-            latitude=place_data.get("latitude", place.latitude),
-            longitude=place_data.get("longitude", place.longitude),
-            owner=owner,
-            new_description=place_data.get("description", place.description),
-        )
+        # No update for this attributes
+        place_data["latitude"] = place.latitude
+        place_data["longitude"] = place.longitude
+        place_data["owner"] = place.owner
 
-        self.place_repo.update(place_id, place.__dict__)
+        self.place_repo.update(place_id, place_data)
         return place
 
     def add_amenities(self, place_id, amenity_id):
@@ -160,6 +165,14 @@ class HBnBFacade:
             place_id=review_data["place_id"],
         )
 
+        user = self.get_user(review_data["user_id"])
+        user.add_review(review.uuid)
+        self.user_repo.update(user, user.__dict__)
+
+        place = self.get_place(review_data["place_id"])
+        place.add_review(review.uuid)
+        self.place_repo.update(place, place.__dict__)
+
         self.review_repo.add(review)
         return review
 
@@ -177,10 +190,7 @@ class HBnBFacade:
         if review is None:
             return None
 
-        review.update_review(
-            text=review_data.get("text"), rating=review_data.get("rating")
-        )
-        self.review_repo.update(review_id, review.__dict__)
+        self.review_repo.update(review_id, review_data)
         return review
 
     def delete_review(self, review_id):
@@ -188,6 +198,26 @@ class HBnBFacade:
         review = self.review_repo.get(review_id)
         if review is None:
             return None
+
+        user = self.get_user(review.user_id)
+        user.delete_review(review_id)
+        self.user_repo.update(user, user.__dict__)
+
+        place = self.get_place(review.place_id)
+        place.delete_review(review_id)
+        self.place_repo.update(place, place.__dict__)
+
         self.review_repo.delete(review_id)
         return review_id
 
+    # ----------------------------------------------------------- #
+    ########################_PLACE_AMENITY-########################
+    # ----------------------------------------------------------- #
+
+    def associate_place_to_amenity(self, place_id, amenity_id):
+        """Associate a place and an amenity."""
+        new_tuple = (place_id, amenity_id)
+        association_list = self.association_repo.get_all()
+        if new_tuple not in association_list:
+            association = PlaceAmenityAssociation(place_id, amenity_id)
+            self.association_repo.add(association)

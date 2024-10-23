@@ -54,19 +54,20 @@ class TestReview(unittest.TestCase):
 
     def test_update_review(self):
         """Test the creation of a review with an invalid note type."""
-        self.review.update_review(text="Updated review", rating=4)
+        data = {"text": "Updated review", "rating": 4}
+        self.review.update(data)
         self.assertEqual(self.review.text, "Updated review")
         self.assertEqual(self.review.rating, 4)
 
     def test_update_empty_text(self):
         """Test updating a review with empty text."""
         with self.assertRaises(ValueError):
-            self.review.update_review(text="")
+            self.review.update({"text": ""})
 
     def test_update_invalid_rating(self):
         """Test updating a review with an invalid rating."""
         with self.assertRaises(ValueError):
-            self.review.update_review(rating=10)
+            self.review.update({"text": "HA!", "rating": 10})
 
 
 if __name__ == "__main__":

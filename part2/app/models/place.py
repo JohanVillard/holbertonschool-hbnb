@@ -48,21 +48,19 @@ class Place:
     @longitude.setter
     def longitude(self, value):
         if not -180 <= value <= 180 or not isinstance(value, float):
-            raise ValueError("Latitude must be between -180 and 180")
+            raise ValueError("Longitude must be between -180 and 180")
         self.__longitude = value
 
-    def update_place(
-        self, new_title, price, latitude, longitude, owner, new_description=None
-    ):
+    def update(self, data):
         """Update place."""
-        self.is_valid_length(new_title, 1, 100)
-        self.title = new_title
-        self.price = float(price)
-        self.latitude = float(latitude)
-        self.longitude = float(longitude)
-        self.owner = owner
-        self.description = new_description
+        self.is_valid_length(data["title"], 1, 100)
+        data["price"] = float(data["price"])
+        data["latitude"] = float(data["latitude"])
+        data["longitude"] = float(data["longitude"])
 
+        for key, value in data.items():
+            if hasattr(self, key):
+                setattr(self, key, value)
         self.updated_at = datetime.now()
 
     def add_review(self, review):

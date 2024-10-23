@@ -1,5 +1,10 @@
 # Testing Process Documentation: User, Amenity, Place, and Review Endpoints
 
+## Postman
+
+- This tests was perform with Postman.
+- Click on the link to se the collection of tests : [Endpoints testing].(https://hbnb11.postman.co/workspace/HBnB-Workspace~39992131-109f-4104-8883-4b824d56cc88/collection/38801940-38979a27-2e72-40ac-9c32-cdad033cd95b?action=share&creator=38801940)
+
 ### **User**
 
 #### **GET: List all users (no users initially)**
@@ -24,10 +29,10 @@
 
 - **Expected Output:** User created with a unique `id` and the provided details. Status code `201 Created`.
 
-#### **POST: Create user2**
+#### **POST: Create user2 and strore his id**
 
 - **Endpoint:** `POST /api/v1/users/`
-- **Description:** Create another user (`user2`) with first name, last name, and email.
+- **Description:** Create another user (`user2`) and store their ID for future requests.
 - **Input Data:**
 
 ```json
@@ -96,6 +101,12 @@
 
 - **Expected Output:** Updated user details. Status code `200 OK`.
 
+#### **GET: User by ID after update**
+
+- **Endpoint:** `GET /api/v1/users/{{userId}}`
+- **Description:** Retrieve the details of a specific user by their `id`.
+- **Expected Output:** The user's details including `id`, `first_name`, `last_name`, `email`, `places`, and `reviews`. Status code `200 OK`.
+
 #### **PUT: Update user with invalid ID**
 
 - **Endpoint:** `PUT /api/v1/users/invalid_id`
@@ -132,6 +143,12 @@
 - **Description:** Retrieve an amenity's details by its `id`.
 - **Expected Output:** The amenity's details including `id` and `name`. Status code `200 OK`.
 
+#### **GET: Amenity by ID**
+
+- **Endpoint:** `GET /api/v1/amenities/{{amenityId}}`
+- **Description:** Attempt to update an amenity using an invalid `id`.
+- **Expected Output:** The amenity's details including `id` and `name`. Status code `200 OK`.
+
 #### **PUT: Update amenity**
 
 - **Endpoint:** `PUT /api/v1/amenities/{{amenityId}}`
@@ -146,9 +163,49 @@
 
 - **Expected Output:** Updated amenity details. Status code `200 OK`.
 
+#### **GET: Amenity by ID after update**
+
+- **Endpoint:** `GET /api/v1/amenities/{{amenityId}}`
+- **Description:** Retrieve an amenity's details by its `id`.
+- **Expected Output:** The amenity's details including `id` and `name`. Status code `200 OK`.
+
 ---
 
 ### **Place**
+
+#### **POST: Create place with out-of-range latitude**
+
+- **Endpoint:** `POST /api/v1/places/`
+- **Description:** Create a new place (e.g., a villa) with out-of-range latitude.
+- **Input Data:**
+
+```json
+{
+  "title": "Invalid Place",
+  "price": 500,
+  "description": "Invalid latitude test",
+  "latitude": 100, // Out of range
+  "longitude": 1.4,
+  "owner_id": "{{userId}}"
+}
+```
+
+#### **POST: Create place with out-of-range longitude**
+
+- **Endpoint:** `POST /api/v1/places/`
+- **Description:** Create a new place (e.g., a villa) with out-of-range latitude.
+- **Input Data:**
+
+```json
+{
+  "title": "Invalid Place",
+  "price": 500,
+  "description": "Invalid longitude test",
+  "latitude": 39.02,
+  "longitude": 200, // Out of range
+  "owner_id": "{{userId}}"
+}
+```
 
 #### **POST: Create place**
 
@@ -181,6 +238,12 @@
 - **Description:** Retrieve a place's details by its `id`.
 - **Expected Output:** The place's details including `id`, `title`, `price`, `owner`, and `description`. Status code `200 OK`.
 
+#### **GET: Place by ID with invalid id**
+
+- **Endpoint:** `GET /api/v1/places/{{placeId}}`
+- **Description:** Attempt to get a place using an invalid `id`.
+- **Expected Output:** The place's details including `id`, `title`, `price`, `owner`, and `description`. Status code `200 OK`.
+
 #### **PUT: Update place**
 
 - **Endpoint:** `PUT /api/v1/places/{{placeId}}`
@@ -198,6 +261,11 @@
 }
 ```
 
+#### **GET: Place by ID after update**
+
+- **Endpoint:** `GET /api/v1/places/{{placeId}}`
+- **Description:** Retrieve a place's details by its `id`.
+- **Expected Output:** The place's details including `id`, `title`, `price`, `owner`, and `description`. Status code `200 OK`.
 - **Expected Output:** Updated place details. Status code `200 OK`.
 
 #### **POST: Associate amenity to place**
@@ -208,9 +276,76 @@
 
 ---
 
+#### **GET: Place by ID whith amenity**
+
+- **Endpoint:** `GET /api/v1/places/{{placeId}}`
+- **Description:** Retrieve a place's details by its `id`.
+- **Expected Output:** The place's details including `id`, `title`, `price`, `owner`, and `description`. Status code `200 OK`.
+- **Expected Output:** Updated place details. Status code `200 OK`.
+
 ### **Review**
 
+#### **POST: Create review with missing fields**
+
+- **Endpoint:** `POST /api/v1/reviews/`
+- **Description:** Create a new review for a place with a rating and text.
+- **Input Data:**
+
+```json
+{
+  "text": "",
+  "rating": "5",
+  "place_id": "{{placeId}}",
+  "user_id": "{{userId}}"
+}
+```
+
+#### **POST: Create review with out-of-range rating**
+
+- **Endpoint:** `POST /api/v1/reviews/`
+- **Description:** Create a new review for a place with a rating and text.
+- **Input Data:**
+
+```json
+{
+  "text": "Not great.",
+  "rating": "6", // Out of range
+  "place_id": "{{placeId}}",
+  "user_id": "{{userId}}"
+}
+```
+
 #### **POST: Create review**
+
+- **Endpoint:** `POST /api/v1/reviews/`
+- **Description:** Create a new review for a place with a rating and text.
+- **Input Data:**
+
+```json
+{
+  "text": "Magnifique endroit, je reviendrai!",
+  "rating": "5",
+  "place_id": "{{placeId}}",
+  "user_id": "{{userId}}"
+}
+```
+
+#### **POST: Create review 2**
+
+- **Endpoint:** `POST /api/v1/reviews/`
+- **Description:** Create a new review for a place with a rating and text.
+- **Input Data:**
+
+```json
+{
+  "text": "Magnifique endroit, je reviendrai!",
+  "rating": "5",
+  "place_id": "{{placeId}}",
+  "user_id": "{{userId}}"
+}
+```
+
+#### **POST: Create review 3**
 
 - **Endpoint:** `POST /api/v1/reviews/`
 - **Description:** Create a new review for a place with a rating and text.
@@ -254,9 +389,26 @@
 }
 ```
 
+#### **GET: Place by ID after review input**
+
+- **Endpoint:** `GET /api/v1/places/{{placeId}}`
+- **Description:** Retrieve a place's details by its `id`.
+- **Expected Output:** The place's details including `id`, `title`, `price`, `owner`, and `description`. Status code `200 OK`.
 - **Expected Output:** Updated review details. Status code `200 OK`.
 
 #### **DELETE: Delete review**
 
 - **Endpoint:** `DELETE /api/v1/reviews/{{reviewId}}`
 - **Description:** Delete a specific review by its `id
+
+#### **GET: List reviews by user**
+
+- **Endpoint:** `GET /api/v1/users/{{userId}}/reviews`
+- **Description:** Retrieve a list of all created reviews by user.
+- **Expected Output:** A list of reviews with their details. Status code `200 OK`.
+
+#### **GET: List reviews by place**
+
+- **Endpoint:** `GET /api/v1/places/{{placeId}}/reviews`
+- **Description:** Retrieve a list of all created reviews by place.
+- **Expected Output:** A list of reviews with their details. Status code `200 OK`.
