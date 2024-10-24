@@ -129,7 +129,7 @@ class UserReview(Resource):
             if not user:
                 return {"error": "User not found"}, 404
             reviews_list = user.reviews
-            print(f"liste des review: {reviews_list}")
+
             if not reviews_list:
                 return {"message": "No reviews found for this user"}, 404
             return [
