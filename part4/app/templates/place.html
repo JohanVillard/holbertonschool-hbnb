@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Place Details</title>
+    <link rel="stylesheet" href="../static/styles.css">
+</head>
+<body>
+		<!-- Header section -->
+		{% include "header.html" %}
+
+    <!-- Main Content Section -->
+    <main>
+				<!-- Place details section -->
+        <section id="place-details">
+					<h2 class="place-title">Title</h2>
+						<div class="place-info">
+
+							<div>
+								<h4>Host:</h4>
+								<p class="place-owner">owner</p>	
+							</div>
+							<div>
+								<h4>Price:</h4>
+								<p class="place-price">0000</p>	
+							</div>
+							<div>
+								<h4>Description:</h4>	
+								<p class="place-description">...</p>
+							</div> 
+							<div>
+								<h4>Amenites:</h4>
+								<ul class="place-amenities">
+									<li class="amenity">Amenity</li>
+								</ul>
+							</div>
+					</div>
+
+					<!-- Place's reviews section -->
+					<section id="reviews">
+							<h3>Reviews</h3>
+
+							<!-- Review list container -->
+							<div id="review-cards-container">
+								<!-- Reviews will be added dynamically here -->
+							</div>
+
+							<!-- Review model -->
+							<template id="review-template">
+								<div class="review-card">
+									<p class="review-user">User: name</p>
+									<p class="review-description">Review: text</p>
+									<div class="review-star-rating">
+										<p>Rating: </p>
+										<i class="fas fa-star"></i>
+										<i class="fas fa-star"></i>
+										<i class="fas fa-star"></i>
+										<i class="fas fa-star"></i>
+										<i class="fas fa-star"></i>
+									</div>
+								</div>
+							</template>
+
+						{% include "add_review.html" %}
+							
+					</section>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    {% include "footer.html" %}
+
+    <!-- JavaScript -->
+    <script type="module" src="../static/script.js"></script>
+</body>
+</html> 

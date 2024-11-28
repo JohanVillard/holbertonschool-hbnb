@@ -1,0 +1,25 @@
+<!-- Add review section -->
+<section id="add-review">
+  <h3>Add a Review</h3>
+  <form id="review-form">
+    <h4><label for="review-text">Your Review:</label></h4>
+    <textarea
+      id="review-text"
+      name="review-text"
+      required
+      placeholder="Write your review here..."
+    ></textarea>
+
+    <h4><label for="review-rating">Rating:</label></h4>
+    <select name="stars-numbers" id="review-rating">
+      <option value="1">1 Star</option>
+      <option value="2">2 Stars</option>
+      <option value="3">3 Stars</option>
+      <option value="4">4 Stars</option>
+      <option value="5">5 Stars</option>
+    </select>
+
+    <button type="submit" id="submit-review">Submit Review</button>
+    <div id="message"></div>
+  </form>
+</section>

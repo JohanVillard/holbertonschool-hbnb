@@ -1,0 +1,450 @@
+/* 
+  This is a SAMPLE File to get you started. Follow the instructions on the project to complete the tasks. 
+  You'll probably need to override some of theese styles.
+*/
+/* Import Google font - Poppins */
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto:wght@300;400;700&display=swap");
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+body {
+  background-color: var(--main-background-color);
+  color: var(--primary-text-color);
+  font-family: var(--primary-font);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--heading-font);
+  color: var(--title-color);
+}
+
+header {
+  background-color: var(--header-background-color);
+  color: var(--secondary-text-color);
+  padding: var(--header-padding);
+  font-size: var(--footer-font-size);
+}
+
+.logo {
+  max-width: 150px;
+  height: auto;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#login-link {
+  font-size: 1.2rem;
+  padding: 0.75rem;
+}
+
+#login-link:hover {
+  color: var(--primary-text-color);
+  background-color: var(--accent-color);
+  border-radius: var(--add-review-border-radius);
+  padding: 0.75rem;
+}
+
+nav a {
+  color: var(--secondary-text-color);
+  text-decoration: none;
+  margin-left: 1rem;
+  display: inline-block;
+}
+
+main {
+  background-color: var(--main-background-color);
+  padding: 2rem;
+  min-height: calc(100vh - var(--header-height) - var(--footer-height));
+}
+
+/* Header styling */
+h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--title-color);
+}
+
+/* Form */
+form#login-form {
+  background-color: var(--card-color);
+  padding: 20px 30px;
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+  width: 100%;
+  max-width: 400px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+form#login-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+form#login-form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+form#login-form button {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: var(--secondary-color);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+form#login-form button:hover {
+  background-color: var(--accent-color);
+  color: var(--primary-text-color);
+}
+
+#login-error-message {
+  color: red;
+  display: none;
+  text-align: center;
+  margin: 1rem;
+}
+
+#filter {
+  font-weight: bold;
+  font-size: 1.1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  max-width: 20rem;
+  margin: auto;
+  gap: 0.4rem;
+}
+
+#price-filter {
+  background-color: var(--card-color);
+  font-size: 0.85rem;
+  border-radius: 5px;
+  padding: 0.2rem;
+  border-color: transparent;
+}
+
+/* Overall styling for the places list */
+#places-list {
+  background-color: var(--primary-color);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Create a responsive grid for place cards */
+#place-cards-container {
+  display: none;
+  grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
+  grid-gap: 2rem; /* Space between cards */
+  justify-items: center;
+  margin-top: 2rem;
+  width: 100%;
+  max-width: 1200px; /* Set a maximum width for large screens */
+}
+
+/* Responsive Design - Adjust columns for smaller screens */
+@media (max-width: 768px) {
+  #place-cards-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns for medium screens */
+  }
+}
+
+@media (max-width: 480px) {
+  #place-cards-container {
+    grid-template-columns: 1fr; /* 1 column for mobile screens */
+  }
+}
+
+/* Place card styling */
+.place-card {
+  border-radius: var(--fixed-card-border-radius);
+  border: var(--fixed-card-border);
+  margin: var(--fixed-card-margin);
+  padding: var(--fixed-card-padding);
+  box-shadow: var(--card-shadow);
+  background-color: var(--card-color);
+  text-align: center;
+  width: 100%; /* Allow card to take full width of its container */
+  height: 250px; /* Fixed height for consistency */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* Hover effect for place cards */
+.place-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+}
+
+/* Title and price styling */
+.place-card .place-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--primary-text-color);
+  margin: 0;
+}
+
+.place-card .place-price {
+  color: var(--primary-text-color);
+  margin: 0;
+}
+
+/* Button styling */
+.place-card .details-button {
+  box-sizing: border-box;
+  font-size: 1rem;
+  padding: 0.75rem;
+  width: 8rem;
+  align-self: center;
+  background-color: var(--button-color);
+  color: var(--secondary-text-color);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Button hover effect */
+.place-card .details-button:hover {
+  background-color: var(--accent-color);
+  color: var(--primary-text-color);
+}
+
+/* Place-info container */
+.place-info {
+  border-radius: var(--fixed-card-border-radius);
+  border: var(--fixed-card-border);
+  padding: var(--fixed-card-padding);
+  box-shadow: var(--card-shadow);
+  background-color: var(--card-color);
+  text-align: center;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  justify-content: center;
+}
+
+.place-info div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 100%;
+}
+
+/* Image */
+.place-info img {
+  max-width: 100%; /* L'image occupe toute la largeur de son conteneur */
+  max-height: 200px; /* Limite la hauteur pour éviter des images trop grandes */
+  border-radius: 8px; /* Légère courbure des coins */
+  object-fit: cover; /* Maintient le ratio de l'image */
+}
+
+/* Aligns h4 and p */
+.place-info h4,
+.place-info p {
+  text-align: center;
+}
+
+/* Center list */
+.place-info ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  text-align: center;
+}
+
+#reviews h3 {
+  margin-top: 1rem;
+}
+
+#review-cards-container {
+  display: grid;
+  grid-template-columns: 1fr; /* 1 columns */
+  grid-gap: 1rem; /* Space between cards */
+  justify-items: center;
+  width: 100%;
+}
+
+.review-card {
+  border-radius: var(--fixed-card-border-radius);
+  border: var(--fixed-card-border);
+  margin: var(--fixed-card-margin);
+  padding: var(--fixed-card-padding);
+  box-shadow: var(--card-shadow);
+  background-color: var(--card-color);
+  text-align: left;
+  width: 100%; /* Allow card to take full width of its container */
+  height: 10rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.review-user {
+  font-weight: bold;
+}
+
+#add-review h4 {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.review-star-rating {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.review-star-rating .fa-star {
+  text-shadow: 0 0 0.1re black;
+  color: #ffffff;
+  font-size: 0.6rem;
+}
+
+.review-star-rating .fa-star.active {
+  color: #000000;
+}
+
+#review-text {
+  background-color: var(--card-color);
+  border-radius: var(--add-review-border-radius);
+  box-shadow: var(--card-shadow);
+  padding: 2.5rem;
+  width: 100%; /* Allow card to take full width of its container */
+  height: 50px; /* Fixed height for consistency */
+  overflow: hidden;
+  border-color: transparent;
+}
+
+#review-rating {
+  background-color: var(--card-color);
+  border-radius: var(--add-review-border-radius);
+  box-shadow: var(--card-shadow);
+  width: 100%; /* Allow card to take full width of its container */
+  padding: 0.5rem 1rem; /* Reduce vertical padding */
+  margin-bottom: 0.5rem;
+  border-color: transparent;
+}
+
+#submit-review {
+  color: var(--secondary-text-color);
+  background-color: var(--secondary-color);
+  border-radius: var(--add-review-border-radius);
+  box-shadow: var(--card-shadow);
+  width: 100%; /* Allow card to take full width of its container */
+  padding: 0.5rem 1rem; /* Reduce vertical padding */
+  margin-top: 0.4rem;
+  border-style: solid;
+  border-width: 1px;
+  border-color: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#submit-review:hover {
+  background-color: var(--accent-color);
+  color: var(--primary-text-color);
+}
+
+#review-message {
+  display: none;
+  text-align: center;
+  margin: 2rem;
+}
+
+footer {
+  background-color: var(--footer-background-color);
+  color: var(--secondary-text-color);
+  font-size: var(--footer-font-size);
+  text-align: center;
+  padding: var(--footer-padding);
+  position: fixed;
+  bottom: 0;
+  z-index: 10;
+  width: 100%;
+}
+
+:root {
+  --fixed-card-margin: 20px;
+  --fixed-card-padding: 10px;
+  --fixed-card-border: 1px solid #ddd;
+  --fixed-card-border-radius: 10px;
+
+  --primary-font: "Roboto", sans-serif;
+  --heading-font: "Montserrat", sans-serif;
+
+  --card-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.25);
+
+  --primary-color: #ffffff;
+  --secondary-color: #87ceeb;
+  --accent-color: #98ff98;
+  --background-color: #ffffff;
+  --card-color: #fde9e0;
+  --primary-text-color: #333333;
+  --secondary-text-color: #fff;
+
+  --button-color: var(--secondary-color);
+  --title-color: #428ee9;
+  --add-review-border-radius: 5px;
+
+  --header-background-color: var(--secondary-color);
+  --header-font-size: 1.2rem;
+  --header-padding: 20px;
+
+  --main-background-color: var(--primary-color);
+
+  --footer-background-color: var(--secondary-color);
+  --footer-font-size: 1rem;
+  --footer-padding: 15px;
+}
