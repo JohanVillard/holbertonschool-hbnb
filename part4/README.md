@@ -1,8 +1,42 @@
 # HBnB Project: A Clone of ABnB
 
+## How to test the part4 of the HBnB project
+
+### 1. Go to part4
+
+```bash
+cd ~/Repository/holbertonschool-hbnb/part4/
+```
+
+### 2. Install the environment
+
+[Installation instructions](#installation-instructions)
+
+### 3. Open a new shell and Create a new user:
+
+```bash
+curl -X POST http://127.0.0.1:5000/api/v1/users/ \
+  -H "Content-Type: application/json" \
+  -d '{
+    "first_name": "Choisir un prénom",
+    "last_name": "Choisir un nom",
+    "email": "XXXXXXXXX@gmail.com",
+    "password": "Choisir un mot de passe"
+  }'
+```
+
+### 4. Add a review on any available place
+
+- You're on index page, choose a place by clicking on `View Details`.
+- In the review form, write a review.
+- Give a score to the place.
+- Submit.
+- The page reloads. Your is registered.
+
 ## Overview of the setup
 
 The project is organize in the following structure :
+
 ```bash
 hbnb/
 ├── app/
@@ -47,7 +81,7 @@ hbnb/
 
 ## Installation instructions
 
-#### Create an environment
+### Create an environment
 
 ```macOS/Linux
 $ mkdir myproject
@@ -193,7 +227,7 @@ python run.py
         string icon
         string category
         datetime created_a
-        datetime updated_at    
+        datetime updated_at
     }
 
     Place_Amenity {
